@@ -1,0 +1,6 @@
+name: qt6-webengine-uibcdf-build
+channels:
+  - conda-forge
+dependencies:
+  - conda-build
+  - mamba

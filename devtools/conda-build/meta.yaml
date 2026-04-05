@@ -1,0 +1,49 @@
+package:
+  name: qt6-webengine-uibcdf
+  version: "6.9.2"
+
+source:
+  path: ../..
+
+build:
+  number: 0
+
+requirements:
+  host:
+    - python =3.13
+    - qt6-main =6.9.2
+    - qt6-positioning-uibcdf ==6.9.2
+  run:
+    - python =3.13
+    - qt6-main >=6.9.2,<6.10.0a0
+    - qt6-positioning-uibcdf ==6.9.2
+    - libgcc
+    - libstdcxx
+
+test:
+  commands:
+    - test -f "$PREFIX/lib/libQt6WebEngineCore.so.6"
+    - test -f "$PREFIX/lib/libQt6WebEngineQuick.so.6"
+    - test -f "$PREFIX/lib/libQt6WebEngineWidgets.so.6"
+    - test -f "$PREFIX/lib/libQt6WebEngineQuickDelegatesQml.so.6"
+    - test -f "$PREFIX/libexec/QtWebEngineProcess"
+    - test -f "$PREFIX/qml/QtWebEngine/libqtwebenginequickplugin.so"
+    - test -f "$PREFIX/qml/QtWebEngine/ControlsDelegates/libqtwebenginequickdelegatesplugin.so"
+    - test -f "$PREFIX/resources/qtwebengine_resources.pak"
+    - test -f "$PREFIX/translations/qtwebengine_locales/en-US.pak"
+    - test -f "$PREFIX/include/qt6/QtWebEngineCore/qwebenginepage.h"
+    - test -f "$PREFIX/include/qt6/QtWebEngineWidgets/qwebengineview.h"
+    - test -f "$PREFIX/lib/cmake/Qt6WebEngineCore/Qt6WebEngineCoreConfig.cmake"
+    - test -f "$PREFIX/lib/cmake/Qt6WebEngineQuick/Qt6WebEngineQuickConfig.cmake"
+    - test -f "$PREFIX/lib/cmake/Qt6WebEngineWidgets/Qt6WebEngineWidgetsConfig.cmake"
+
+about:
+  summary: "Experimental UIBCDF Qt WebEngine runtime package for Linux/Python 3.13."
+  license: "LGPL-3.0-only"
+  description: |
+    Experimental conda package for the Qt WebEngine runtime layer required by
+    the provisional UIBCDF standalone Qt-for-Python family.
+
+extra:
+  recipe-maintainers:
+    - uibcdf
