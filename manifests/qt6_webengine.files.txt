@@ -23,10 +23,12 @@ Qt/qml/QtWebEngine/ControlsDelegates/qmldir
 Qt/qml/QtWebEngine/libqtwebenginequickplugin.so
 Qt/qml/QtWebEngine/plugins.qmltypes
 Qt/qml/QtWebEngine/qmldir
+Qt/resources/icudtl.dat
 Qt/resources/qtwebengine_devtools_resources.pak
 Qt/resources/qtwebengine_resources.pak
 Qt/resources/qtwebengine_resources_100p.pak
 Qt/resources/qtwebengine_resources_200p.pak
+Qt/resources/v8_context_snapshot.bin
 Qt/translations/qtwebengine_ca.qm
 Qt/translations/qtwebengine_de.qm
 Qt/translations/qtwebengine_en.qm

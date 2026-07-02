@@ -92,3 +92,36 @@ First `conda build` attempt succeeded on 2026-03-31.
   - cmake configs installed under `lib/cmake/Qt6WebEngine*/`
 
 Dependency `qt6-positioning-uibcdf 6.9.2` was available via local conda-bld channel.
+
+## Runtime Fix Build 1 (2026-07-02)
+
+MolSysViewer standalone Qt validation exposed that the initial
+`qt6-webengine-uibcdf-6.9.2-py313_0` package was not sufficient as an installed
+runtime:
+
+- `QtWebEngineProcess` was installed under `$PREFIX/libexec/QtWebEngineProcess`;
+- WebEngine `.pak` resources were installed under `$PREFIX/resources`;
+- locales were installed under `$PREFIX/translations/qtwebengine_locales`;
+- Qt WebEngine did not auto-detect those paths in the split conda layout;
+- Chromium then reached an ICU failure because the package did not include
+  `resources/icudtl.dat`.
+
+Build `py313_1` fixes the runtime payload and activation contract:
+
+- package build number bumped from `0` to `1`;
+- manifest now includes:
+  - `Qt/resources/icudtl.dat`;
+  - `Qt/resources/v8_context_snapshot.bin`;
+- package tests now assert both files are installed;
+- package tests assert the conda activation/deactivation scripts are installed;
+- package tests include a direct `ctypes.CDLL('libQt6WebEngineCore.so.6')`
+  smoke check;
+- activation script sets:
+  - `QTWEBENGINEPROCESS_PATH=$CONDA_PREFIX/libexec/QtWebEngineProcess`;
+  - `QTWEBENGINE_RESOURCES_PATH=$CONDA_PREFIX/resources`;
+  - `QTWEBENGINE_LOCALES_PATH=$CONDA_PREFIX/translations/qtwebengine_locales`;
+  - `QTWEBENGINE_DISABLE_SANDBOX=1`;
+- deactivation script restores the previous values.
+
+Before rebuilding, the manifest was checked against the source runtime
+`$QT6_WEBENGINE_UIBCDF_SOURCE_PREFIX` and all entries were present.

@@ -125,3 +125,9 @@ for module in Qt6WebEngineCore Qt6WebEngineQuick Qt6WebEngineWidgets; do
     cp -a "$REPO_ROOT/cmake/${module}/${module}ConfigVersion.cmake" "$cmake_dst_dir/"
     cp -a "$REPO_ROOT/cmake/${module}/${module}Targets.cmake" "$cmake_dst_dir/"
 done
+
+# Copy activate/deactivate scripts
+mkdir -p "$PREFIX/etc/conda/activate.d"
+mkdir -p "$PREFIX/etc/conda/deactivate.d"
+cp -a "$REPO_ROOT/devtools/conda-build/activate.sh" "$PREFIX/etc/conda/activate.d/qt6-webengine-uibcdf.sh"
+cp -a "$REPO_ROOT/devtools/conda-build/deactivate.sh" "$PREFIX/etc/conda/deactivate.d/qt6-webengine-uibcdf.sh"

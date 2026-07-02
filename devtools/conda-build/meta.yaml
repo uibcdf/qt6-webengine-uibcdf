@@ -6,7 +6,7 @@ source:
   path: ../..
 
 build:
-  number: 0
+  number: 1
 
 requirements:
   host:
@@ -30,12 +30,18 @@ test:
     - test -f "$PREFIX/qml/QtWebEngine/libqtwebenginequickplugin.so"
     - test -f "$PREFIX/qml/QtWebEngine/ControlsDelegates/libqtwebenginequickdelegatesplugin.so"
     - test -f "$PREFIX/resources/qtwebengine_resources.pak"
+    - test -f "$PREFIX/resources/icudtl.dat"
+    - test -f "$PREFIX/resources/v8_context_snapshot.bin"
     - test -f "$PREFIX/translations/qtwebengine_locales/en-US.pak"
+    - test -f "$PREFIX/etc/conda/activate.d/qt6-webengine-uibcdf.sh"
+    - test -f "$PREFIX/etc/conda/deactivate.d/qt6-webengine-uibcdf.sh"
     - test -f "$PREFIX/include/qt6/QtWebEngineCore/qwebenginepage.h"
     - test -f "$PREFIX/include/qt6/QtWebEngineWidgets/qwebengineview.h"
     - test -f "$PREFIX/lib/cmake/Qt6WebEngineCore/Qt6WebEngineCoreConfig.cmake"
     - test -f "$PREFIX/lib/cmake/Qt6WebEngineQuick/Qt6WebEngineQuickConfig.cmake"
     - test -f "$PREFIX/lib/cmake/Qt6WebEngineWidgets/Qt6WebEngineWidgetsConfig.cmake"
+    - python -c "import ctypes; ctypes.CDLL('libQt6WebEngineCore.so.6')"
+
 
 about:
   summary: "Experimental UIBCDF Qt WebEngine runtime package for Linux/Python 3.13."
