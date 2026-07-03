@@ -7,6 +7,12 @@ source:
 
 build:
   number: 1
+  # Forward the repackage source inputs from the caller's environment into the
+  # conda-build sandbox, so install-local.sh can point at non-default locations.
+  script_env:
+    - QT6_WEBENGINE_UIBCDF_SOURCE_PREFIX
+    - QT6_WEBENGINE_UIBCDF_SOURCE_REPO
+    - QT6_WEBENGINE_UIBCDF_MANIFEST
 
 requirements:
   host:
