@@ -35,6 +35,12 @@ test:
     - test -f "$PREFIX/translations/qtwebengine_locales/en-US.pak"
     - test -f "$PREFIX/etc/conda/activate.d/qt6-webengine-uibcdf.sh"
     - test -f "$PREFIX/etc/conda/deactivate.d/qt6-webengine-uibcdf.sh"
+    # Functional check: the test env is activated, so activate.d must have run and
+    # wired the runtime env vars to real resources (not just shipped the script).
+    - test "$QTWEBENGINE_DISABLE_SANDBOX" = "1"
+    - test -n "$QTWEBENGINE_RESOURCES_PATH"
+    - test -f "$QTWEBENGINE_RESOURCES_PATH/icudtl.dat"
+    - test -f "$QTWEBENGINEPROCESS_PATH"
     - test -f "$PREFIX/include/qt6/QtWebEngineCore/qwebenginepage.h"
     - test -f "$PREFIX/include/qt6/QtWebEngineWidgets/qwebengineview.h"
     - test -f "$PREFIX/lib/cmake/Qt6WebEngineCore/Qt6WebEngineCoreConfig.cmake"
