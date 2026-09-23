@@ -4,14 +4,12 @@
 # channel (anaconda.org/uibcdf), so users can install it with:
 #     mamba install -c uibcdf -c conda-forge <package>
 #
-# The upstream version stays FIXED (6.9.2). "Newer" is signalled by the recipe's
-# build number (build: number in meta.yaml) — bump it before re-uploading.
+# The version follows meta.yaml. Increment its build number for another build
+# of the same version. This script uploads directly to the main label; do not
+# use it for a candidate before coordinated staging and release admission.
 #
-# This is a REPACKAGE build (no compile). The two external inputs are REQUIRED:
-#     export QT6_WEBENGINE_UIBCDF_SOURCE_PREFIX=/path/to/PySide6     # dir with Qt/
-#     export QT6_WEBENGINE_UIBCDF_SOURCE_REPO=/path/to/qtwebengine   # dir with src/
-# The recipe forwards these into the build (build.script_env). Diego's paths are
-# used only as a fallback if they happen to exist on this machine.
+# This is a REPACKAGE build (no Chromium compilation). The recipe downloads
+# checksum-pinned official PySide and Qt sources automatically.
 # It also needs qt6-positioning-uibcdf built into the local channel first.
 #
 # Run the family in order (each repo has its own build-and-upload.sh):
@@ -35,11 +33,6 @@ set -euo pipefail
 PKG_NAME="qt6-webengine-uibcdf"
 CHANNEL="uibcdf"
 RECIPE_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-
-FALLBACK_PREFIX="/home/diego/Myopt/miniconda3/envs/molsyssuite-qt-spike/lib/python3.13/site-packages/PySide6"
-FALLBACK_REPO="/home/diego/repos@others/qtwebengine"
-SRC_PREFIX="${QT6_WEBENGINE_UIBCDF_SOURCE_PREFIX:-$FALLBACK_PREFIX}"
-SRC_REPO="${QT6_WEBENGINE_UIBCDF_SOURCE_REPO:-$FALLBACK_REPO}"
 
 JOBS=""
 while [ $# -gt 0 ]; do
@@ -65,28 +58,13 @@ fi
 if [ -z "${CONDA_PREFIX:-}" ]; then
     echo "error: no active conda environment (activate the build env first)." >&2; exit 1
 fi
-if [ ! -d "${SRC_PREFIX}/Qt" ]; then
-    echo "error: upstream PySide6 not found at: ${SRC_PREFIX}" >&2
-    echo "       export QT6_WEBENGINE_UIBCDF_SOURCE_PREFIX=/path/to/PySide6   # must contain Qt/" >&2
-    exit 1
-fi
-if [ ! -d "${SRC_REPO}/src" ]; then
-    echo "error: qtwebengine source repo not found at: ${SRC_REPO}" >&2
-    echo "       export QT6_WEBENGINE_UIBCDF_SOURCE_REPO=/path/to/qtwebengine   # must contain src/" >&2
-    exit 1
-fi
-export QT6_WEBENGINE_UIBCDF_SOURCE_PREFIX="${SRC_PREFIX}"
-export QT6_WEBENGINE_UIBCDF_SOURCE_REPO="${SRC_REPO}"
-
 echo ">> [${PKG_NAME}] building ..."
-echo ">>   source PySide6 : ${SRC_PREFIX}"
-echo ">>   source Qt repo : ${SRC_REPO}"
 # (Needs qt6-positioning-uibcdf in the local channel; conda build stops with a clear
 #  'nothing provides qt6-positioning-uibcdf' error otherwise — build it first.)
-conda build "${RECIPE_DIR}" -c local -c conda-forge
+conda build "${RECIPE_DIR}" --override-channels -c local -c conda-forge
 
 # Locate the freshly built artifact (warm cache, so this is quick).
-OUT="$(conda build "${RECIPE_DIR}" -c local -c conda-forge --output 2>/dev/null | grep -E '\.(conda|tar\.bz2)$' | tail -1)"
+OUT="$(conda build "${RECIPE_DIR}" --override-channels -c local -c conda-forge --output 2>/dev/null | grep -E '\.(conda|tar\.bz2)$' | tail -1)"
 if [ -z "${OUT}" ] || [ ! -f "${OUT}" ]; then
     echo "error: could not locate the built artifact to upload." >&2; exit 1
 fi

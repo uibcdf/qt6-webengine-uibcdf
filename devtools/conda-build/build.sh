@@ -1,10 +1,10 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-REPO_ROOT="$(cd "${RECIPE_DIR}/../.." && pwd)"
-SOURCE_QT_PREFIX="${QT6_WEBENGINE_UIBCDF_SOURCE_PREFIX:-/home/diego/Myopt/miniconda3/envs/molsyssuite-qt-spike/lib/python3.13/site-packages/PySide6}"
-SOURCE_QT_REPO="${QT6_WEBENGINE_UIBCDF_SOURCE_REPO:-/home/diego/repos@others/qtwebengine}"
-MANIFEST="${QT6_WEBENGINE_UIBCDF_MANIFEST:-${REPO_ROOT}/manifests/qt6_webengine.files.txt}"
+REPO_ROOT="${SRC_DIR}"
+SOURCE_QT_PREFIX="${SRC_DIR}/upstream-wheel/PySide6"
+SOURCE_QT_REPO="${SRC_DIR}/upstream-qtwebengine"
+MANIFEST="${REPO_ROOT}/manifests/qt6_webengine.files.txt"
 
 if [ ! -d "$SOURCE_QT_PREFIX/Qt" ]; then
     echo "Missing source Qt runtime under: $SOURCE_QT_PREFIX" >&2

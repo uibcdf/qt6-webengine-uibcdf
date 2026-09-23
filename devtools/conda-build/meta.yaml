@@ -1,32 +1,40 @@
 package:
   name: qt6-webengine-uibcdf
-  version: "6.9.2"
+  version: "6.10.1"
 
 source:
-  path: ../..
+  - path: ../..
+  - url: https://files.pythonhosted.org/packages/94/3b/3ed951c570a15570706a89d39bfd4eaaffdf16d5c2dca17e82fc3ec8aaa6/pyside6_addons-6.10.1-cp39-abi3-manylinux_2_34_x86_64.whl
+    sha256: 330c229b58d30083a7b99ed22e118eb4f4126408429816a4044ccd0438ae81b4
+    folder: upstream-wheel
+  - url: https://codeload.github.com/qt/qtwebengine/tar.gz/28eb5425c6abef3938fb82a48427d45d1dd4e64f
+    fn: qtwebengine-6.10.1.tar.gz
+    sha256: 05645440d4177efd3a67992f01c3af65258d43be16b95ab2bd8bb3447db6a155
+    folder: upstream-qtwebengine
 
 build:
-  number: 2
-  # Forward the repackage source inputs from the caller's environment into the
-  # conda-build sandbox, so install-local.sh can point at non-default locations.
-  script_env:
-    - QT6_WEBENGINE_UIBCDF_SOURCE_PREFIX
-    - QT6_WEBENGINE_UIBCDF_SOURCE_REPO
-    - QT6_WEBENGINE_UIBCDF_MANIFEST
+  number: 0
 
 requirements:
   host:
-    - python =3.13
-    - qt6-main =6.9.2
-    - qt6-positioning-uibcdf ==6.9.2
+    - qt6-main =6.10.1
+    - qt6-positioning-uibcdf =6.10.1
   run:
-    - python =3.13
-    - qt6-main >=6.9.2,<6.10.0a0
-    - qt6-positioning-uibcdf ==6.9.2
+    - qt6-main =6.10.1
+    - qt6-positioning-uibcdf =6.10.1
+    - nss
+    - nspr
+    - libudev
+    - libgbm
+    - libxkbfile
+    - xorg-libxshmfence
+    - libcap
     - libgcc
     - libstdcxx
 
 test:
+  requires:
+    - python =3.14
   commands:
     - test -f "$PREFIX/lib/libQt6WebEngineCore.so.6"
     - test -f "$PREFIX/lib/libQt6WebEngineQuick.so.6"
@@ -43,7 +51,7 @@ test:
     - test -f "$PREFIX/etc/conda/deactivate.d/qt6-webengine-uibcdf.sh"
     # Functional check: the test env is activated, so activate.d must have run and
     # wired the runtime env vars to real resources (not just shipped the script).
-    - test "$QTWEBENGINE_DISABLE_SANDBOX" = "1"
+    - bash -c 'unset QTWEBENGINE_DISABLE_SANDBOX; source "$PREFIX/etc/conda/activate.d/qt6-webengine-uibcdf.sh"; test -z "${QTWEBENGINE_DISABLE_SANDBOX:-}"'
     - test -n "$QTWEBENGINE_RESOURCES_PATH"
     - test -f "$QTWEBENGINE_RESOURCES_PATH/icudtl.dat"
     - test -f "$QTWEBENGINEPROCESS_PATH"
@@ -56,7 +64,7 @@ test:
 
 
 about:
-  summary: "Experimental UIBCDF Qt WebEngine runtime package for Linux/Python 3.13."
+  summary: "Experimental UIBCDF Qt WebEngine 6.10.1 runtime for Linux."
   license: "LGPL-3.0-only"
   description: |
     Experimental conda package for the Qt WebEngine runtime layer required by

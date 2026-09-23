@@ -12,7 +12,7 @@ set_target_properties(Qt6::WebEngineWidgets PROPERTIES
     _qt_module_include_name "QtWebEngineWidgets"
     _qt_module_interface_name "WebEngineWidgets"
     _qt_package_name "Qt6WebEngineWidgets"
-    _qt_package_version "6.9.2"
+    _qt_package_version "6.10.1"
 )
 
 add_library(Qt6::WebEngineWidgetsPrivate INTERFACE IMPORTED)

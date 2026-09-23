@@ -3,15 +3,15 @@ get_filename_component(PACKAGE_PREFIX_DIR "${CMAKE_CURRENT_LIST_DIR}/../../../" 
 include(CMakeFindDependencyMacro)
 
 if(NOT Qt6_FOUND)
-    find_dependency(Qt6 6.9.2)
+    find_dependency(Qt6 6.10.1)
 endif()
 
-find_dependency(Qt6Core 6.9.2)
-find_dependency(Qt6Gui 6.9.2)
-find_dependency(Qt6Qml 6.9.2)
-find_dependency(Qt6Quick 6.9.2)
-find_dependency(Qt6WebEngineCore 6.9.2)
-find_dependency(Qt6WebChannelQuick 6.9.2)
+find_dependency(Qt6Core 6.10.1)
+find_dependency(Qt6Gui 6.10.1)
+find_dependency(Qt6Qml 6.10.1)
+find_dependency(Qt6Quick 6.10.1)
+find_dependency(Qt6WebEngineCore 6.10.1)
+find_dependency(Qt6WebChannelQuick 6.10.1)
 
 if(NOT DEFINED Qt6WebEngineQuick_FOUND)
     set(Qt6WebEngineQuick_FOUND TRUE)

@@ -12,7 +12,7 @@ set_target_properties(Qt6::WebEngineCore PROPERTIES
     _qt_module_include_name "QtWebEngineCore"
     _qt_module_interface_name "WebEngineCore"
     _qt_package_name "Qt6WebEngineCore"
-    _qt_package_version "6.9.2"
+    _qt_package_version "6.10.1"
 )
 
 add_library(Qt6::WebEngineCorePrivate INTERFACE IMPORTED)
